@@ -15,9 +15,6 @@ using namespace cv;
 using namespace std;
 
 
-#include"traiterImage.h"
-
-
 namespace Ui
 {
 class MainWindow;
@@ -43,6 +40,7 @@ protected slots:
     void flou();
     void contraste();
     void cropper();
+    void contour();
     void creer_fenetre_redimension();
     void initialiser();//revenir à l'image de départ
     void redimensionner(int largeur, int hauteur);
@@ -61,8 +59,6 @@ private:
     void creer_shortcut();        //creer les raccourcis
     QPixmap IPlImage2QImage(const IplImage*);  //Convertir une IplImage en QImage
     cv::Mat QImage2Mat(QImage&);  //convertir QImage en Mat
-    TraiterImage*traiterImage;  //traitement de l'image
-    TraiterImage*traiter_histo;//Traitement des histgrammes
     QString fileName; //fichier pour ouverture de l'image
     QImage image1;  //image a ouvrir
     void mousePressEvent(QMouseEvent *);

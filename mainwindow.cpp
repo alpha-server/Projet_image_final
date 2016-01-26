@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include"traiterImage.h"
 #include"formRedimensionnement.h"
 #include<QtGui>
 #include<QMessageBox>
@@ -54,6 +53,7 @@ void MainWindow::creer_connexions()
     QObject::connect(ui->actionFlou, SIGNAL(triggered()), this, SLOT(flou()));
     QObject::connect(ui->actionContraste, SIGNAL(triggered()), this, SLOT(contraste()));
     //QObject::connect(ui->bouttonCrop, SIGNAL(clicked()), this, SLOT(cropper()));
+    QObject::connect(ui->actionContour,SIGNAL(triggered()),this,SLOT(contour()));
     QObject::connect(ui->actionRedimension, SIGNAL(triggered()), this, SLOT(creer_fenetre_redimension()));
     QObjectCleanupHandler::connect(ui->actionDecoupage, SIGNAL(triggered()), this, SLOT(cropper()));
     QObject::connect(ui->actionInitialiser, SIGNAL(triggered()), this, SLOT(initialiser()));
@@ -127,6 +127,12 @@ void MainWindow::initialiser()
     ui->label_histo2->show();
     ui->label_histo3->show();
     afficher_histogramme_rgb(QImage2Mat(image1));
+
+}
+
+//Detection de contour par Sobel
+void MainWindow::contour()
+{
 
 }
 

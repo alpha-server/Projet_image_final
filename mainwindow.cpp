@@ -58,6 +58,7 @@ void MainWindow::creer_connexions()
     QObjectCleanupHandler::connect(ui->actionDecoupage, SIGNAL(triggered()), this, SLOT(cropper()));
     QObject::connect(ui->actionInitialiser, SIGNAL(triggered()), this, SLOT(initialiser()));
     QObject::connect(ui->action_Propos, SIGNAL(triggered()), this, SLOT(about()));
+     QObject::connect(ui->actionHistogramme, SIGNAL(triggered()), this, SLOT(afficher_histogramme()));
 }
 
 //Chargement d'une image en fonction de sa taille
@@ -85,11 +86,6 @@ void MainWindow::ouvrir()
          //traiterImage = new TraiterImage(image1.height(), fact*image1.width());
          this->loadImage();
 
-         //Afficher les histogrammes
-         afficher_histogramme_rgb(QImage2Mat(image1));
-         //QImage image2 = histogramme_yuv(image1);
-         //afficher_histogramme_yuv(QImage2Mat(image2));
-
      }
 
     else{
@@ -110,9 +106,10 @@ void MainWindow::enregistrer()
         return;
     }
 
-    QImage image = this->image1;
+
+    QImage imageSave = ui->label_image->pixmap()->toImage();
     QString extension = QFileInfo(fichier).suffix();
-    image.save(fichier);
+    imageSave.save(fichier);
 }
 
 
@@ -294,16 +291,11 @@ void MainWindow::fermer()
 
 void MainWindow::afficher_histogramme_rgb(Mat src)
 {
-  //  const char*c = file.toStdString().c_str();
-   // Mat src = imread(c);
     vector<Mat>tab = histogramme(src);
     for(int i = 0; i<3; i++){
         if(i == 0)
         {
             QPixmap image_histo = Mat2QPixmap(tab[i]);
-            //int fact1 = image_histo.depth()/8;
-          //  traiter_histo = new TraiterImage(image_histo.height(), fact1*image_histo.width());
-
             QSize size(ui->label_histo1->width(), ui->label_histo1->height());
             QImage image2 = image_histo.toImage();
             image2.scaled(size, Qt::KeepAspectRatio);
@@ -314,8 +306,6 @@ void MainWindow::afficher_histogramme_rgb(Mat src)
             if(i == 1)
             {
                 QPixmap image_histo = Mat2QPixmap(tab[i]);
-              //  int fact1 = image_histo.depth()/8;
-              //  traiter_histo = new TraiterImage(image_histo.height(), fact1*image_histo.width());
                 QSize size(ui->label_histo2->width(), ui->label_histo2->height());
                 QImage image2 = image_histo.toImage();
                 image2.scaled(size, Qt::KeepAspectRatio);
@@ -325,8 +315,6 @@ void MainWindow::afficher_histogramme_rgb(Mat src)
             else
             {
                 QPixmap image_histo = Mat2QPixmap(tab[i]);
-               // int fact1 = image_histo.depth()/8;
-            //    traiter_histo = new TraiterImage(image_histo.height(), fact1*image_histo.width());
                 QSize size(ui->label_histo2->width(), ui->label_histo2->height());
                 QImage image2 = image_histo.toImage();
                 image2.scaled(size, Qt::KeepAspectRatio);
@@ -348,12 +336,26 @@ void MainWindow::afficher_histogramme_rgb(Mat src)
 cv::Mat MainWindow::QImage2Mat(QImage& img)
 {
     cv::Mat tmp(img.height(),img.width(),CV_8UC3,(uchar*)img.bits(),img.bytesPerLine());
-       cv::Mat result; // deep copy just in case (my lack of knowledge with open cv)
+       cv::Mat result;
        cvtColor(tmp, result,CV_BGR2RGB);
        return result;
 
 }
 
+void MainWindow::afficher_histogramme()
+{
+    if(image1.isNull())
+    {
+        QMessageBox::information(this, "MainWindow", "Veillez chargez une image,"
+                                 "pour charger une image, aller dans le menu fichier->ouvrir,"
+                                    "sélectionner une image ou faites Ctrl+O");
+        return ;
+
+
+    }
+
+     afficher_histogramme_rgb(QImage2Mat(image1));//afficher les histogrammes en couleur
+}
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
@@ -385,10 +387,10 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
    //p1 = ui->label_image->mapFromGlobal(p1);
    //p2 = ui->label_image->mapFromGlobal(p2);
    double X = image1.width();
-    double Y = image1.height();
+   double Y = image1.height();
    QPixmap originalQpix(*ui->label_image->pixmap());
-   //X = originalQpix.width() / X;
- //  Y = originalQpix.height() / Y;
+   X = originalQpix.width() / X;
+   Y = originalQpix.height() / Y;
    /*p1.setX(int(p1.x() * X));
    p1.setY(int(p1.y()* Y));
 
@@ -453,6 +455,7 @@ QImage MainWindow::cropImage(QRect rect)
     else{
 
          QMessageBox::warning(this, "Image", "Aucune image à cropper\n");
+
     }
 
 }

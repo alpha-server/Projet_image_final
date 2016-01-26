@@ -37,7 +37,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="Tab1">
      <property name="cursor">
@@ -149,10 +149,11 @@
     <addaction name="actionEnregistrer"/>
     <addaction name="actionFermer"/>
    </widget>
-   <widget class="QMenu" name="menuEdition">
+   <widget class="QMenu" name="menuAffichage">
     <property name="title">
-     <string>Édition</string>
+     <string>Affichage</string>
     </property>
+    <addaction name="actionHistogramme"/>
    </widget>
    <widget class="QMenu" name="menuFiltres">
     <property name="title">
@@ -178,7 +179,7 @@
     <addaction name="actionInitialiser"/>
    </widget>
    <addaction name="menuFichier"/>
-   <addaction name="menuEdition"/>
+   <addaction name="menuAffichage"/>
    <addaction name="menuFiltres"/>
    <addaction name="menuSelection"/>
    <addaction name="menuAide"/>
@@ -245,6 +246,16 @@
   <action name="action_Propos">
    <property name="text">
     <string>À Propos</string>
+   </property>
+  </action>
+  <action name="actionHistogramme">
+   <property name="text">
+    <string>Histogramme</string>
+   </property>
+  </action>
+  <action name="actionContour">
+   <property name="text">
+    <string>Contour</string>
    </property>
   </action>
  </widget>

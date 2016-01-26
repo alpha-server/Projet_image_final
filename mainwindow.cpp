@@ -237,44 +237,57 @@ void MainWindow::flou()
 //Filtre de contraste (correspond à l'accentuation des contours)
 void MainWindow::contraste()
 {
-    //TODO : modifier le pourcentage de contraste (ici 50) en le demandant à l'utilisateur
-    //Ne fonctionne pas : http://xmcvs.free.fr/astroart/Chapitre4.pdf
-    if(image1.isNull())
-    {
-        QMessageBox::information(this, "MainWindow", "Veillez chargez une image,"
-                                 "pour charger une image, aller dans le menu fichier->ouvrir,"
-                                    "sélectionner une image ou faites Ctrl+O");
-        return;
-    }
     QImage imgCpy = image1;
 
-    for(int i = 1; i<imgCpy.width()-1;i++)
-    {
-        for(int j = 1; j<imgCpy.height()-1;j++)
+        for(int i = 1; i<imgCpy.width()-1;i++)
         {
-            QRgb rgb = imgCpy.pixel(i,j);
+            for(int j = 1; j<imgCpy.height()-1;j++)
+            {
+                //Case centrale
+                QRgb rgb = image1.pixel(i,j);
+                int rouge = qRed(rgb);
+                int vert = qGreen(rgb);
+                int bleu =  qBlue(rgb);
 
-            int rouge = (qRed(rgb)-127>0)?qRed(rgb)-127:0;
-            int vert = (qGreen(rgb)-127>0)?qGreen(rgb)-127:0;
-            int bleu =(qBlue(rgb)-127>0)?qBlue(rgb)-127:0;
+                //Case droite
+                QRgb rgbD = image1.pixel(i+1,j);
+                int rougeD = qRed(rgbD);
+                int vertD = qGreen(rgbD);
+                int bleuD =  qBlue(rgbD);
 
-            int resR = qRed(rgb)+(10.0/100.0)*(rouge);
-            int resG = qGreen(rgb)+(10.0/100.0)*(vert);
-            int resB = qBlue(rgb)+(10.0/100.0)*(bleu);
+                //Case gauche
+                QRgb rgbG = image1.pixel(i-1,j);
+                int rougeG = qRed(rgbG);
+                int vertG = qGreen(rgbG);
+                int bleuG =  qBlue(rgbG);
 
-            imgCpy.setPixel(i,j,qRgb(resR,resG,resB));
+                //Case haut
+                QRgb rgbH = image1.pixel(i,j+1);
+                int rougeH = qRed(rgbH);
+                int vertH = qGreen(rgbH);
+                int bleuH =  qBlue(rgbH);
+
+                //Case bas
+                QRgb rgbB = image1.pixel(i,j-1);
+                int rougeB = qRed(rgbB);
+                int vertB = qGreen(rgbB);
+                int bleuB =  qBlue(rgbB);
+
+                //Calcul du résultat
+                int resR = (5*rouge-(rougeD+rougeG+rougeH+rougeB)>255) ? 255 : 5*rouge-(rougeD+rougeG+rougeH+rougeB);
+                int resG = (5*vert-(vertD+vertG+vertH+vertB)>255) ? 255 : 5*vert-(vertD+vertG+vertH+vertB);
+                int resB = (5*bleu-(bleuD+bleuG+bleuH+bleuB)>255) ? 255 : 5*bleu-(bleuD+bleuG+bleuH+bleuB);
+
+                imgCpy.setPixel(i,j,qRgb(resR,resG,resB));
+            }
         }
-    }
 
-    //Adaptation à la taille de la fenetre
-    QSize size(ui->label_image->width(), ui->label_image->height());
-    imgCpy = imgCpy.scaled(size, Qt::KeepAspectRatio);
+        //Adaptation à la taille de la fenetre
+        QSize size(ui->label_image->width(), ui->label_image->height());
+        imgCpy = imgCpy.scaled(size, Qt::KeepAspectRatio);
 
-    //Affichage
-    ui->label_histo1->hide();
-    ui->label_histo2->hide();
-    ui->label_histo3->hide();
-    ui->label_image->setPixmap(QPixmap::fromImage(imgCpy));
+        //Affichage
+        ui->label_image->setPixmap(QPixmap::fromImage(imgCpy));
 }
 
 void MainWindow::about()

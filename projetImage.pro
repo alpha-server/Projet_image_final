@@ -20,7 +20,7 @@ traiterImage.cpp\
 
 
 HEADERS  += mainwindow.h \
-   # traiterImage.h \
+   #traiterImage.h \
     formRedimensionnement.h
 
 FORMS    += mainwindow.ui

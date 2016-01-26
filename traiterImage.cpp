@@ -3,7 +3,7 @@
 using namespace std;
 
 //Constructeur par défaut
-/*TraiterImage::TraiterImage() : m_Image(NULL)
+TraiterImage::TraiterImage() : m_Image(NULL)
 {
     cout<<"+Constructeur par défaut"<<endl;
     m_width = m_heigth = 0;
@@ -69,4 +69,3 @@ void TraiterImage::Liberer()
 
     return;
 }
-*/

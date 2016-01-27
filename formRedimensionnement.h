@@ -10,9 +10,6 @@
 #include<QSpinBox>
 #include<QImage>
 
-
-
-
 class formRedimensionnement : public QDialog
 {
     Q_OBJECT
@@ -24,14 +21,11 @@ public:
     int getHauteur();
     QPushButton* getButtonOK();
 
-
-
 private slots:
      void quitterFormulaire(int exec);
 
 signals:
     void recupererValeur(int valeurHauteur, int valeurLargeur);
-
 
 private:
     QVBoxLayout* layout;
@@ -43,8 +37,6 @@ private:
     QPushButton* annuler;
 
     int valeurLargeur, valeurHauteur;//Valeurs du formulaire
-
-
 };
 
 #endif // FORMREDIMENSIONNEMENT_H

@@ -7,14 +7,13 @@
 
 formRedimensionnement::formRedimensionnement()
 {
-    QWidget fenetre;
     largeur = new QSpinBox(this);
     largeur->setMinimum(0);
-    largeur->setMaximum(1500);
+    largeur->setMaximum(1900);
 
     hauteur = new QSpinBox(this);
     hauteur->setMinimum(0);
-    hauteur->setMaximum(1500);
+    hauteur->setMaximum(1200);
 
     ok = new QPushButton("OK", this);
     annuler = new QPushButton("Annuler", this);
@@ -26,11 +25,12 @@ formRedimensionnement::formRedimensionnement()
     bouttonLayout = new QHBoxLayout;
     bouttonLayout->addWidget(ok);
     bouttonLayout->addWidget(annuler);
+
     connect(annuler, SIGNAL(clicked()), this, SLOT(reject()));
     connect(ok, SIGNAL(clicked()), this, SLOT(accept()));
     connect(this, SIGNAL(finished(int)), this, SLOT(quitterFormulaire(int)));
 
-  //  connect(this, SIGNAL(recupererValeur(valeurHauteur,valeurLargeur)), this, SLOT(quitterFormulaire()));
+    //connect(this, SIGNAL(recupererValeur(valeurHauteur,valeurLargeur)), this, SLOT(quitterFormulaire()));
     layout = new QVBoxLayout;
     layout->addLayout(formLayout);
     layout->addLayout(bouttonLayout);

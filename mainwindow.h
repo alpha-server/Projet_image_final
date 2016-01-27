@@ -11,6 +11,7 @@
 #include<opencv2/highgui/highgui.hpp>
 #include<QMouseEvent>
 #include<QRubberBand>
+
 using namespace cv;
 using namespace std;
 
@@ -53,8 +54,8 @@ private:
     QImage  histogramme_yuv(QImage image);
     QPixmap Mat2QPixmap(const Mat&);  //convertir un Mat en QPixmap
     QImage  cropImage(QRect);//découpaer l'image
-     void afficher_histogramme_rgb(Mat); //afficher l'histogramme en couleur
-  //  void afficher_histogramme();      //Afficher les histogrammes de ccouleurs de l'image
+    void afficher_histogramme_rgb(Mat); //afficher l'histogramme en couleur
+    //  void afficher_histogramme();      //Afficher les histogrammes de ccouleurs de l'image
     void afficher_histogramme_yuv(Mat);
     vector<Mat> histogramme(Mat&);  //Créer l'histogramme de couleurs de l'image
     void creer_connexions();       //créer les connexions
@@ -70,7 +71,6 @@ private:
     QMouseEvent*event;
     QRubberBand*rubberBand;  //découper l'image
     QPoint myPoint;         //Point pour connaitre la position de la souris
-
 
     Ui::MainWindow *ui;//fenêtre principale
 };

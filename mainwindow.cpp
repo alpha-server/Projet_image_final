@@ -19,7 +19,7 @@
 using namespace cv;
 using namespace std;
 
-//Constructeur pour la
+//Constructeur pour la fenetre
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -73,7 +73,7 @@ void MainWindow::loadImage()
     ui->label_image->setPixmap(QPixmap::fromImage(image2));
 }
 
-//Ouverture et affichage d'une image
+//Ouverture d'une image
 void MainWindow::ouvrir()
 {
     fileName = QFileDialog::getOpenFileName(this, "Ouvrir un fichier", QString(), "Images (*.png *.gif *.jpg *.jpeg)");
@@ -81,22 +81,23 @@ void MainWindow::ouvrir()
      {
          QImage image(fileName);
          image1 = image;
+
          if (image1.isNull())
          {
-             QMessageBox::information(this, "MainWindow", tr("ne peut pas être chargé").arg(fileName));
+             QMessageBox::information(this, "MainWindow", tr("Ne peut pas être chargé").arg(fileName));
              return;
          }
-        // int fact = image1.depth()/8;
+
+         //int fact = image1.depth()/8;
          //traiterImage = new TraiterImage(image1.height(), fact*image1.width());
+
          this->loadImage();
+    }
 
-     }
-
-    else{
-           QMessageBox::information(this, "Fichier", "Vous n'avez rien sélectiooné\n");
-
-
-     }
+    else
+    {
+        QMessageBox::information(this, "Fichier", "Vous n'avez rien sélectionné\n");
+    }
 
 }
 
@@ -653,9 +654,10 @@ void MainWindow::afficher_histogramme_rgb(Mat src)
             QImage image2 = image_histo.toImage();
             image2.scaled(size, Qt::KeepAspectRatio);
             ui->label_histo1->setPixmap(QPixmap::fromImage(image2));
-
         }
-        else{
+
+        else
+        {
             if(i == 1)
             {
                 QPixmap image_histo = Mat2QPixmap(tab[i]);
@@ -663,8 +665,8 @@ void MainWindow::afficher_histogramme_rgb(Mat src)
                 QImage image2 = image_histo.toImage();
                 image2.scaled(size, Qt::KeepAspectRatio);
                 ui->label_histo2->setPixmap(QPixmap::fromImage(image2));
-
             }
+
             else
             {
                 QPixmap image_histo = Mat2QPixmap(tab[i]);
@@ -672,16 +674,9 @@ void MainWindow::afficher_histogramme_rgb(Mat src)
                 QImage image2 = image_histo.toImage();
                 image2.scaled(size, Qt::KeepAspectRatio);
                 ui->label_histo3->setPixmap(QPixmap::fromImage(image2));
-
             }
         }
-
-
-
-
-
     }
-
 }
 
 cv::Mat MainWindow::QImage2Mat(QImage& img)

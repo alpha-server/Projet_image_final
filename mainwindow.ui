@@ -163,7 +163,7 @@
     <addaction name="actionInversion"/>
     <addaction name="actionFlou"/>
     <addaction name="actionContraste"/>
-    <addaction name="actionContour_2"/>
+    <addaction name="actionContour"/>
    </widget>
    <widget class="QMenu" name="menuAide">
     <property name="title">
@@ -255,16 +255,6 @@
    </property>
   </action>
   <action name="actionContour">
-   <property name="text">
-    <string>Contour</string>
-   </property>
-  </action>
-  <action name="actionConjtou">
-   <property name="text">
-    <string>Conjtou</string>
-   </property>
-  </action>
-  <action name="actionContour_2">
    <property name="text">
     <string>Contour</string>
    </property>

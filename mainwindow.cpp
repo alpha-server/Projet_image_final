@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include"formRedimensionnement.h"
+#include<math.h>
 #include<QtGui>
 #include<QMessageBox>
 #include<QFileDialog>
@@ -133,6 +134,107 @@ void MainWindow::initialiser()
 //Detection de contour par Sobel
 void MainWindow::contour()
 {
+    int result;
+    QImage vertical = image1 ;
+    QImage horizontal = image1 ;
+
+    QImage composante = image1;
+
+    printf("dans contour\n");
+
+    //calcul de la composante horizontale
+    for(int i = 1; i<horizontal.width()-1;i++)
+    {
+        for(int j = 1; j<horizontal.height()-1;j++)
+        {
+            //Case droite
+            QRgb rgbD = image1.pixel(i+1,j);
+            int greyD = (qRed(rgbD)+qBlue(rgbD)+qGreen(rgbD))/3;
+
+
+            //Case gauche
+            QRgb rgbG = image1.pixel(i-1,j);
+            int greyG = (qRed(rgbG)+qBlue(rgbG)+qGreen(rgbG))/3;
+
+
+            //case haut droit
+            QRgb rgbHD = image1.pixel(i+1,j+1);
+            int greyHD = (qRed(rgbHD)+qBlue(rgbHD)+qGreen(rgbHD))/3;
+
+            //case haut gauche
+            QRgb rgbHG = image1.pixel(i-1,j+1);
+            int greyHG = (qRed(rgbHG)+qBlue(rgbHG)+qGreen(rgbHG))/3;
+
+            //case bas droit
+            QRgb rgbBD = image1.pixel(i+1,j-1);
+            int greyBD = (qRed(rgbBD)+qBlue(rgbBD)+qGreen(rgbBD))/3;
+
+            //case bas gauche
+            QRgb rgbBG = image1.pixel(i-1,j-1);
+            int greyBG = (qRed(rgbBG)+qBlue(rgbBG)+qGreen(rgbBG))/3;
+
+            result = ( ( 2 * greyD ) + greyHD + greyBD )-( ( 2 * greyG ) + greyHG + greyBG);
+
+            horizontal.setPixel(i,j,qRgb(result,result,result));
+        }
+    }
+
+    //calcul de la composante vertical
+    for(int i = 1; i<vertical.width()-1;i++)
+    {
+        for(int j = 1; j<vertical.height()-1;j++)
+        {
+            //Case haut
+            QRgb rgbH = image1.pixel(i,j+1);
+            int greyH = (qRed(rgbH)+qBlue(rgbH)+qGreen(rgbH))/3;
+
+
+            //Case bas
+            QRgb rgbB = image1.pixel(i,j-1);
+            int greyB = (qRed(rgbB)+qBlue(rgbB)+qGreen(rgbB))/3;
+
+
+            //case haut droit
+            QRgb rgbHD = image1.pixel(i+1,j+1);
+            int greyHD = (qRed(rgbHD)+qBlue(rgbHD)+qGreen(rgbHD))/3;
+
+            //case haut gauche
+            QRgb rgbHG = image1.pixel(i-1,j+1);
+            int greyHG = (qRed(rgbHG)+qBlue(rgbHG)+qGreen(rgbHG))/3;
+
+            //case bas droit
+            QRgb rgbBD = image1.pixel(i+1,j-1);
+            int greyBD = (qRed(rgbBD)+qBlue(rgbBD)+qGreen(rgbBD))/3;
+
+            //case bas gauche
+            QRgb rgbBG = image1.pixel(i-1,j-1);
+            int greyBG = (qRed(rgbBG)+qBlue(rgbBG)+qGreen(rgbBG))/3;
+
+            result = ( ( 2 * greyB ) + greyBG + greyBD )-( ( 2 * greyH ) + greyHG + greyHD);
+
+            vertical.setPixel(i,j,qRgb(result,result,result));
+        }
+    }
+
+    //addition des deux composantes
+    for(int i = 1; i<composante.width()-1;i++)
+    {
+        for(int j = 1; j<composante.height()-1;j++)
+        {
+           QRgb verti = vertical.pixel(i,j);
+           QRgb hori = horizontal.pixel(i,j);
+           result = ( sqrt(qRed(verti)*qRed(verti))+(qRed(hori)*qRed(hori)));
+           composante.setPixel(i,j,qRgb(result,result,result));
+        }
+
+    }
+
+    //Adaptation à la taille de la fenetre
+    QSize size(ui->label_image->width(), ui->label_image->height());
+    composante = composante.scaled(size, Qt::KeepAspectRatio);
+
+    //Affichage
+    ui->label_image->setPixmap(QPixmap::fromImage(composante));
 
 }
 

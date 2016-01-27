@@ -115,7 +115,6 @@ void MainWindow::enregistrer()
     imageSave.save(fichier);
 }
 
-
 void MainWindow::initialiser()
 {
     if(image1.isNull())
@@ -140,7 +139,7 @@ void MainWindow::contourprewitt()
     QImage vertical = image1 ;
     QImage horizontal = image1 ;
 
-    QImage composante = image1;
+    QImage composante = ui->label_image->pixmap()->toImage();
 
     printf("dans contour\n");
 
@@ -150,29 +149,29 @@ void MainWindow::contourprewitt()
         for(int j = 1; j<horizontal.height()-1;j++)
         {
             //Case droite
-            QRgb rgbD = image1.pixel(i+1,j);
+            QRgb rgbD = ui->label_image->pixmap()->toImage().pixel(i+1,j);
             int greyD = (qRed(rgbD)+qBlue(rgbD)+qGreen(rgbD))/3;
 
 
             //Case gauche
-            QRgb rgbG = image1.pixel(i-1,j);
+            QRgb rgbG = ui->label_image->pixmap()->toImage().pixel(i-1,j);
             int greyG = (qRed(rgbG)+qBlue(rgbG)+qGreen(rgbG))/3;
 
 
             //case haut droit
-            QRgb rgbHD = image1.pixel(i+1,j+1);
+            QRgb rgbHD = ui->label_image->pixmap()->toImage().pixel(i+1,j+1);
             int greyHD = (qRed(rgbHD)+qBlue(rgbHD)+qGreen(rgbHD))/3;
 
             //case haut gauche
-            QRgb rgbHG = image1.pixel(i-1,j+1);
+            QRgb rgbHG = ui->label_image->pixmap()->toImage().pixel(i-1,j+1);
             int greyHG = (qRed(rgbHG)+qBlue(rgbHG)+qGreen(rgbHG))/3;
 
             //case bas droit
-            QRgb rgbBD = image1.pixel(i+1,j-1);
+            QRgb rgbBD = ui->label_image->pixmap()->toImage().pixel(i+1,j-1);
             int greyBD = (qRed(rgbBD)+qBlue(rgbBD)+qGreen(rgbBD))/3;
 
             //case bas gauche
-            QRgb rgbBG = image1.pixel(i-1,j-1);
+            QRgb rgbBG = ui->label_image->pixmap()->toImage().pixel(i-1,j-1);
             int greyBG = (qRed(rgbBG)+qBlue(rgbBG)+qGreen(rgbBG))/3;
 
             result = ( greyD + greyHD + greyBD )-( greyG + greyHG + greyBG);
@@ -187,29 +186,29 @@ void MainWindow::contourprewitt()
         for(int j = 1; j<vertical.height()-1;j++)
         {
             //Case haut
-            QRgb rgbH = image1.pixel(i,j+1);
+            QRgb rgbH = ui->label_image->pixmap()->toImage().pixel(i,j+1);
             int greyH = (qRed(rgbH)+qBlue(rgbH)+qGreen(rgbH))/3;
 
 
             //Case bas
-            QRgb rgbB = image1.pixel(i,j-1);
+            QRgb rgbB = ui->label_image->pixmap()->toImage().pixel(i,j-1);
             int greyB = (qRed(rgbB)+qBlue(rgbB)+qGreen(rgbB))/3;
 
 
             //case haut droit
-            QRgb rgbHD = image1.pixel(i+1,j+1);
+            QRgb rgbHD = ui->label_image->pixmap()->toImage().pixel(i+1,j+1);
             int greyHD = (qRed(rgbHD)+qBlue(rgbHD)+qGreen(rgbHD))/3;
 
             //case haut gauche
-            QRgb rgbHG = image1.pixel(i-1,j+1);
+            QRgb rgbHG = ui->label_image->pixmap()->toImage().pixel(i-1,j+1);
             int greyHG = (qRed(rgbHG)+qBlue(rgbHG)+qGreen(rgbHG))/3;
 
             //case bas droit
-            QRgb rgbBD = image1.pixel(i+1,j-1);
+            QRgb rgbBD = ui->label_image->pixmap()->toImage().pixel(i+1,j-1);
             int greyBD = (qRed(rgbBD)+qBlue(rgbBD)+qGreen(rgbBD))/3;
 
             //case bas gauche
-            QRgb rgbBG = image1.pixel(i-1,j-1);
+            QRgb rgbBG = ui->label_image->pixmap()->toImage().pixel(i-1,j-1);
             int greyBG = (qRed(rgbBG)+qBlue(rgbBG)+qGreen(rgbBG))/3;
 
             result = ( greyB  + greyBG + greyBD )-( greyH + greyHG + greyHD);
@@ -244,7 +243,7 @@ void MainWindow::contourprewitt()
 void MainWindow::fusionmilieu()
 {
     //copie de l'image de base
-    QImage resultat = image1;
+    QImage resultat = ui->label_image->pixmap()->toImage();
     QImage toto;
     //ouverture d'une seconde image
     fileName = QFileDialog::getOpenFileName(this, "Ouvrir un fichier", QString(), "Images (*.png *.gif *.jpg *.jpeg)");
@@ -270,17 +269,17 @@ void MainWindow::fusionmilieu()
     }
 
     //on verifie la taille des images pour savoir laquelle va dans l'autre
-    if(image1.width() < toto.width()) //on met image 1 dans image 2
+    if(resultat.width() < toto.width()) //on met image 1 dans image 2
     {
-        for(int i = 1; i<image1.width()-1;i++)
+        for(int i = 1; i<resultat.width()-1;i++)
         {
-            for(int j = 1; j<image1.height()-1;j++)
+            for(int j = 1; j<resultat.height()-1;j++)
             {
-                QRgb rgb1 = image1.pixel(i,j);
-                QRgb rgb2 = toto.pixel(i,j);
-                int red=qRed(rgb1)+qRed(rgb2);
-                int green=qGreen(rgb1)+qGreen(rgb2);
-                int blue=qBlue(rgb1)+qBlue(rgb2);
+                QRgb rgb2 = resultat.pixel(i,j);
+                QRgb rgb1 = toto.pixel(i,j);
+                int red=(((1)*qRed(rgb1))+((1)*qRed(rgb2)))/2;
+                int green=(((1)*qGreen(rgb1))+((1)*qGreen(rgb2)))/2;
+                int blue=(((1)*qBlue(rgb1))+((1)*qBlue(rgb2)))/2;
 
                 resultat.setPixel(i,j,qRgb(red,green,blue));
 
@@ -293,11 +292,12 @@ void MainWindow::fusionmilieu()
         {
             for(int j = 1; j<toto.height()-1;j++)
             {
-                QRgb rgb1 = image1.pixel(i,j);
+                QRgb rgb1 = resultat.pixel(i,j);
                 QRgb rgb2 = toto.pixel(i,j);
-                int red=qRed(rgb1)+qRed(rgb2)/2;
-                int green=qGreen(rgb1)+qGreen(rgb2)/2;
-                int blue=qBlue(rgb1)+qBlue(rgb2)/2;
+
+                int red=(((1)*qRed(rgb1))+((1)*qRed(rgb2)))/2;
+                int green=(((1)*qGreen(rgb1))+((1)*qGreen(rgb2)))/2;
+                int blue=(((1)*qBlue(rgb1))+((1)*qBlue(rgb2)))/2;
 
                 resultat.setPixel(i,j,qRgb(red,green,blue));
 
@@ -314,7 +314,6 @@ void MainWindow::fusionmilieu()
     ui->label_image->setPixmap(QPixmap::fromImage(resultat));
 }
 
-
 //Detection de contour par Sobel
 void MainWindow::contoursobel()
 {
@@ -322,7 +321,7 @@ void MainWindow::contoursobel()
     QImage vertical = image1 ;
     QImage horizontal = image1 ;
 
-    QImage composante = image1;
+    QImage composante = ui->label_image->pixmap()->toImage();
 
     printf("dans contour\n");
 
@@ -332,29 +331,29 @@ void MainWindow::contoursobel()
         for(int j = 1; j<horizontal.height()-1;j++)
         {
             //Case droite
-            QRgb rgbD = image1.pixel(i+1,j);
+            QRgb rgbD = ui->label_image->pixmap()->toImage().pixel(i+1,j);
             int greyD = (qRed(rgbD)+qBlue(rgbD)+qGreen(rgbD))/3;
 
 
             //Case gauche
-            QRgb rgbG = image1.pixel(i-1,j);
+            QRgb rgbG = ui->label_image->pixmap()->toImage().pixel(i-1,j);
             int greyG = (qRed(rgbG)+qBlue(rgbG)+qGreen(rgbG))/3;
 
 
             //case haut droit
-            QRgb rgbHD = image1.pixel(i+1,j+1);
+            QRgb rgbHD = ui->label_image->pixmap()->toImage().pixel(i+1,j+1);
             int greyHD = (qRed(rgbHD)+qBlue(rgbHD)+qGreen(rgbHD))/3;
 
             //case haut gauche
-            QRgb rgbHG = image1.pixel(i-1,j+1);
+            QRgb rgbHG = ui->label_image->pixmap()->toImage().pixel(i-1,j+1);
             int greyHG = (qRed(rgbHG)+qBlue(rgbHG)+qGreen(rgbHG))/3;
 
             //case bas droit
-            QRgb rgbBD = image1.pixel(i+1,j-1);
+            QRgb rgbBD = ui->label_image->pixmap()->toImage().pixel(i+1,j-1);
             int greyBD = (qRed(rgbBD)+qBlue(rgbBD)+qGreen(rgbBD))/3;
 
             //case bas gauche
-            QRgb rgbBG = image1.pixel(i-1,j-1);
+            QRgb rgbBG = ui->label_image->pixmap()->toImage().pixel(i-1,j-1);
             int greyBG = (qRed(rgbBG)+qBlue(rgbBG)+qGreen(rgbBG))/3;
 
             result = ( ( 2 * greyD ) + greyHD + greyBD )-( ( 2 * greyG ) + greyHG + greyBG);
@@ -369,29 +368,29 @@ void MainWindow::contoursobel()
         for(int j = 1; j<vertical.height()-1;j++)
         {
             //Case haut
-            QRgb rgbH = image1.pixel(i,j+1);
+            QRgb rgbH = ui->label_image->pixmap()->toImage().pixel(i,j+1);
             int greyH = (qRed(rgbH)+qBlue(rgbH)+qGreen(rgbH))/3;
 
 
             //Case bas
-            QRgb rgbB = image1.pixel(i,j-1);
+            QRgb rgbB = ui->label_image->pixmap()->toImage().pixel(i,j-1);
             int greyB = (qRed(rgbB)+qBlue(rgbB)+qGreen(rgbB))/3;
 
 
             //case haut droit
-            QRgb rgbHD = image1.pixel(i+1,j+1);
+            QRgb rgbHD = ui->label_image->pixmap()->toImage().pixel(i+1,j+1);
             int greyHD = (qRed(rgbHD)+qBlue(rgbHD)+qGreen(rgbHD))/3;
 
             //case haut gauche
-            QRgb rgbHG = image1.pixel(i-1,j+1);
+            QRgb rgbHG = ui->label_image->pixmap()->toImage().pixel(i-1,j+1);
             int greyHG = (qRed(rgbHG)+qBlue(rgbHG)+qGreen(rgbHG))/3;
 
             //case bas droit
-            QRgb rgbBD = image1.pixel(i+1,j-1);
+            QRgb rgbBD = ui->label_image->pixmap()->toImage().pixel(i+1,j-1);
             int greyBD = (qRed(rgbBD)+qBlue(rgbBD)+qGreen(rgbBD))/3;
 
             //case bas gauche
-            QRgb rgbBG = image1.pixel(i-1,j-1);
+            QRgb rgbBG = ui->label_image->pixmap()->toImage().pixel(i-1,j-1);
             int greyBG = (qRed(rgbBG)+qBlue(rgbBG)+qGreen(rgbBG))/3;
 
             result = ( ( 2 * greyB ) + greyBG + greyBD )-( ( 2 * greyH ) + greyHG + greyHD);
@@ -432,7 +431,7 @@ void MainWindow::noir_et_blanc()
                                  "sélectionner une image ou faites Ctrl+O");
         return;
     }
-    QImage imgCpy = image1;
+    QImage imgCpy = ui->label_image->pixmap()->toImage();
 
     for(int i = 0; i<imgCpy.width(); i++)
     {
@@ -471,7 +470,7 @@ void MainWindow::inversion()
                                  "sélectionner une image ou faites Ctrl+O");
         return;
     }
-    QImage imgCpy = image1;
+    QImage imgCpy = ui->label_image->pixmap()->toImage();
 
     imgCpy.invertPixels();
 
@@ -496,7 +495,7 @@ void MainWindow::flou()
                                  "sélectionner une image ou faites Ctrl+O");
         return;
     }
-    QImage imgCpy = image1;
+    QImage imgCpy = ui->label_image->pixmap()->toImage();
 
     for(int i = 1; i<imgCpy.width()-1;i++)
     {
@@ -529,38 +528,38 @@ void MainWindow::flou()
 //Filtre de contraste (correspond à l'accentuation des contours)
 void MainWindow::contraste()
 {
-    QImage imgCpy = image1;
+    QImage imgCpy = ui->label_image->pixmap()->toImage();
 
     for(int i = 1; i<imgCpy.width()-1;i++)
     {
         for(int j = 1; j<imgCpy.height()-1;j++)
         {
             //Case centrale
-            QRgb rgb = image1.pixel(i,j);
+            QRgb rgb = ui->label_image->pixmap()->toImage().pixel(i,j);
             int rouge = qRed(rgb);
             int vert = qGreen(rgb);
             int bleu =  qBlue(rgb);
 
             //Case droite
-            QRgb rgbD = image1.pixel(i+1,j);
+            QRgb rgbD = ui->label_image->pixmap()->toImage().pixel(i+1,j);
             int rougeD = qRed(rgbD);
             int vertD = qGreen(rgbD);
             int bleuD =  qBlue(rgbD);
 
             //Case gauche
-            QRgb rgbG = image1.pixel(i-1,j);
+            QRgb rgbG = ui->label_image->pixmap()->toImage().pixel(i-1,j);
             int rougeG = qRed(rgbG);
             int vertG = qGreen(rgbG);
             int bleuG =  qBlue(rgbG);
 
             //Case haut
-            QRgb rgbH = image1.pixel(i,j+1);
+            QRgb rgbH = ui->label_image->pixmap()->toImage().pixel(i,j+1);
             int rougeH = qRed(rgbH);
             int vertH = qGreen(rgbH);
             int bleuH =  qBlue(rgbH);
 
             //Case bas
-            QRgb rgbB = image1.pixel(i,j-1);
+            QRgb rgbB = ui->label_image->pixmap()->toImage().pixel(i,j-1);
             int rougeB = qRed(rgbB);
             int vertB = qGreen(rgbB);
             int bleuB =  qBlue(rgbB);
@@ -583,6 +582,7 @@ void MainWindow::contraste()
 }
 
 void MainWindow::about()
+
 {
     QMessageBox::about(this, "A propos de l'application",
                        tr("<p>Cette <b> application </b> a pour objectif de s'initier au traitrment d'image en C++ avec Qt"  ));
@@ -592,7 +592,6 @@ void MainWindow::fermer()
 {
     qApp->exit();
 }
-
 
 void MainWindow::afficher_histogramme_rgb(Mat src)
 {

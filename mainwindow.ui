@@ -138,7 +138,7 @@
      <x>0</x>
      <y>0</y>
      <width>884</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
@@ -162,9 +162,11 @@
     <addaction name="actionNoir_et_blanc"/>
     <addaction name="actionInversion"/>
     <addaction name="actionFlou"/>
+    <addaction name="actionRepoussage"/>
     <addaction name="actionContraste"/>
     <addaction name="actionContour_Sobel"/>
     <addaction name="actionContour_Prewitt"/>
+    <addaction name="actionContour"/>
    </widget>
    <widget class="QMenu" name="menuAide">
     <property name="title">
@@ -263,6 +265,16 @@
   <action name="actionContour_Prewitt">
    <property name="text">
     <string>Contour Prewitt</string>
+   </property>
+  </action>
+  <action name="actionContour">
+   <property name="text">
+    <string>Contour</string>
+   </property>
+  </action>
+  <action name="actionRepoussage">
+   <property name="text">
+    <string>Repoussage</string>
    </property>
   </action>
  </widget>

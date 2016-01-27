@@ -46,6 +46,8 @@ protected slots:
     void initialiser();//revenir à l'image de départ
     void redimensionner(int largeur, int hauteur);
     void afficher_histogramme();
+    void contourPerso();
+    void repoussage();
 
 private:
     QImage  histogramme_yuv(QImage image);

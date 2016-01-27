@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.setWindowTitle("Mini Photoshop");
     w.setWindowIcon(QIcon("/home/b/baillema/Desktop/alpha-server-Projet_image_final/logo.png"));
-    w.setFixedSize(largeur, hauteur);
+    //w.setFixedSize(largeur, hauteur);
     w.show();
 
     return a.exec();

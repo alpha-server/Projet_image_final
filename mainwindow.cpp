@@ -634,7 +634,7 @@ void MainWindow::repoussage()
 void MainWindow::about()
 {
     QMessageBox::about(this, "A propos de l'application",
-                       tr("<p>Cette <b> application </b> a pour objectif de s'initier au traitrment d'image en C++ avec Qt"  ));
+                       tr("<p>Cette <b> application </b> a pour objectif de s'initier au traitement d'image en C++ avec Qt"  ));
 
 }
 

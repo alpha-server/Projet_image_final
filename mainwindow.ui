@@ -179,6 +179,7 @@
     <addaction name="actionRedimension"/>
     <addaction name="actionDecoupage"/>
     <addaction name="actionInitialiser"/>
+    <addaction name="actionFusion_milieu"/>
    </widget>
    <addaction name="menuFichier"/>
    <addaction name="menuAffichage"/>
@@ -263,6 +264,11 @@
   <action name="actionContour_Prewitt">
    <property name="text">
     <string>Contour Prewitt</string>
+   </property>
+  </action>
+  <action name="actionFusion_milieu">
+   <property name="text">
+    <string>Fusion milieu</string>
    </property>
   </action>
  </widget>

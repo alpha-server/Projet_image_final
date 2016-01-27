@@ -40,6 +40,7 @@ protected slots:
     void flou();
     void contraste();
     void cropper();
+    void fusionmilieu();
     void contoursobel();
     void contourprewitt();
     void creer_fenetre_redimension();

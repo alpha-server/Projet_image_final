@@ -40,7 +40,8 @@ protected slots:
     void flou();
     void contraste();
     void cropper();
-    void contour();
+    void contoursobel();
+    void contourprewitt();
     void creer_fenetre_redimension();
     void initialiser();//revenir à l'image de départ
     void redimensionner(int largeur, int hauteur);

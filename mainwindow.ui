@@ -163,7 +163,8 @@
     <addaction name="actionInversion"/>
     <addaction name="actionFlou"/>
     <addaction name="actionContraste"/>
-    <addaction name="actionContour"/>
+    <addaction name="actionContour_Sobel"/>
+    <addaction name="actionContour_Prewitt"/>
    </widget>
    <widget class="QMenu" name="menuAide">
     <property name="title">
@@ -254,9 +255,14 @@
     <string>Histogramme</string>
    </property>
   </action>
-  <action name="actionContour">
+  <action name="actionContour_Sobel">
    <property name="text">
-    <string>Contour</string>
+    <string>Contour Sobel</string>
+   </property>
+  </action>
+  <action name="actionContour_Prewitt">
+   <property name="text">
+    <string>Contour Prewitt</string>
    </property>
   </action>
  </widget>

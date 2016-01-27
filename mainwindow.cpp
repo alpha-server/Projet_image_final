@@ -561,14 +561,15 @@ void MainWindow::flou()
     {
         for(int j = 1; j<imgCpy.height()-1;j++)
         {
+            QRgb centre = imgCpy.pixel(i,j);
             QRgb gauche = imgCpy.pixel(i-1,j);
             QRgb droite = imgCpy.pixel(i+1,j);
             QRgb haut = imgCpy.pixel(i,j+1);
             QRgb bas = imgCpy.pixel(i,j-1);
 
-            int resR = (qRed(haut)+qRed(bas)+qRed(gauche)+qRed(droite))/4;
-            int resG = (qGreen(haut)+qGreen(bas)+qGreen(gauche)+qGreen(droite))/4;
-            int resB = (qBlue(haut)+qBlue(bas)+qBlue(gauche)+qBlue(droite))/4;
+            int resR = (qRed(centre)+qRed(haut)+qRed(bas)+qRed(gauche)+qRed(droite))/5;
+            int resG = (qGreen(centre)+qGreen(haut)+qGreen(bas)+qGreen(gauche)+qGreen(droite))/5;
+            int resB = (qBlue(centre)+qBlue(haut)+qBlue(bas)+qBlue(gauche)+qBlue(droite))/5;
 
             imgCpy.setPixel(i,j, qRgb(resR, resG, resB));
         }

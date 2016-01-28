@@ -154,6 +154,7 @@
      <string>Affichage</string>
     </property>
     <addaction name="actionHistogramme"/>
+    <addaction name="actionRotation"/>
    </widget>
    <widget class="QMenu" name="menuFiltres">
     <property name="title">
@@ -256,6 +257,16 @@
   <action name="actionContour">
    <property name="text">
     <string>Contour</string>
+   </property>
+  </action>
+  <action name="actionRotation">
+   <property name="text">
+    <string>Rotation</string>
+   </property>
+  </action>
+  <action name="actionRotation_gauche">
+   <property name="text">
+    <string>Rotation à gauche</string>
    </property>
   </action>
  </widget>

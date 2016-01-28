@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include"traiterImage.h"
+
 #include"formRedimensionnement.h"
 #include<QtGui>
 #include<QMessageBox>
@@ -15,25 +15,41 @@
 #include<opencv2/imgproc/imgproc.hpp>
 #include<opencv2/highgui/highgui.hpp>
 #include<iostream>
+#include<QMatrix>
 
 using namespace cv;
 using namespace std;
 
-//Constructeur pour la
+/**
+ * @brief MainWindow::MainWindow
+ * @param parent
+ * Contructeur de la classe principale
+ */
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     creer_shortcut();
     creer_connexions();
+
 }
 
-//Destructeur de la fenêtre
+
+/**
+ * @brief MainWindow::~MainWindow
+ * Destructeur de la classe
+ */
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete event;
+    delete rubberBand;
 }
 
-//Creation des fonctions de raccourci clavier
+
+/**
+ * @brief MainWindow::creer_shortcut
+ * Création des fonction de raccourcis
+ */
 void MainWindow::creer_shortcut()
 {
     ui->actionOuvrir->setShortcut(tr("Ctrl+O"));
@@ -43,7 +59,11 @@ void MainWindow::creer_shortcut()
     ui->actionRedimension->setShortcut(tr("Ctrl+R"));
 }
 
-//Connection des trigger avec des fonctions
+
+/**
+ * @brief MainWindow::creer_connexions
+ * Création des connexions
+ */
 void MainWindow::creer_connexions()
 {
     QObject::connect(ui->actionOuvrir, SIGNAL(triggered()), this, SLOT(ouvrir()));
@@ -58,18 +78,31 @@ void MainWindow::creer_connexions()
     QObjectCleanupHandler::connect(ui->actionDecoupage, SIGNAL(triggered()), this, SLOT(cropper()));
     QObject::connect(ui->actionInitialiser, SIGNAL(triggered()), this, SLOT(initialiser()));
     QObject::connect(ui->action_Propos, SIGNAL(triggered()), this, SLOT(about()));
-     QObject::connect(ui->actionHistogramme, SIGNAL(triggered()), this, SLOT(afficher_histogramme()));
+    QObject::connect(ui->actionHistogramme, SIGNAL(triggered()), this, SLOT(afficher_histogramme()));
+    QObject::connect(ui->actionRotation, SIGNAL(triggered()), this, SLOT(rotateImage()));
+
+
 }
 
-//Chargement d'une image en fonction de sa taille
+
+
+/**
+ * @brief MainWindow::loadImage
+ * Chargement de l'image
+ */
 void MainWindow::loadImage()
 {
     QSize size(ui->label_image->width(), ui->label_image->height());
     QImage image2 = image1.scaled(size, Qt::KeepAspectRatio);
     ui->label_image->setPixmap(QPixmap::fromImage(image2));
+
 }
 
-//Ouverture et affichage d'une image
+
+/**
+ * @brief MainWindow::ouvrir
+ * Ouverture de l'image et affichage de l'image
+ */
 void MainWindow::ouvrir()
 {
     fileName = QFileDialog::getOpenFileName(this, "Ouvrir un fichier", QString(), "Images (*.png *.gif *.jpg *.jpeg)");
@@ -82,8 +115,7 @@ void MainWindow::ouvrir()
              QMessageBox::information(this, "MainWindow", tr("ne peut pas être chargé").arg(fileName));
              return;
          }
-        // int fact = image1.depth()/8;
-         //traiterImage = new TraiterImage(image1.height(), fact*image1.width());
+
          this->loadImage();
 
      }
@@ -96,7 +128,13 @@ void MainWindow::ouvrir()
 
 }
 
-//Enregistrement d'une image
+
+
+/**
+ * @brief MainWindow::enregistrer
+ * Enregistremnt de l'image
+ */
+
 void MainWindow::enregistrer()
 {
     QString fichier = QFileDialog::getSaveFileName(this, "Enregistrer le fichier", fileName, "Images (*.png *.gif *.jpg *.jpeg)");
@@ -113,6 +151,10 @@ void MainWindow::enregistrer()
 }
 
 
+/**
+ * @brief MainWindow::initialiser
+ * Initialiser l'image::revenir à l'image précedente
+ */
 void MainWindow::initialiser()
 {
     if(image1.isNull())
@@ -123,6 +165,7 @@ void MainWindow::initialiser()
         return;
     }
     this->loadImage();
+
     ui->label_histo1->show();
     ui->label_histo2->show();
     ui->label_histo3->show();
@@ -130,7 +173,12 @@ void MainWindow::initialiser()
 
 }
 
-//Filtre noir et blanc
+
+
+/**
+ * @brief MainWindow::noir_et_blanc
+ * filtre noir rt blanc
+ */
 void MainWindow::noir_et_blanc()
 {
     if(image1.isNull())
@@ -169,7 +217,11 @@ void MainWindow::noir_et_blanc()
     ui->label_histo3->hide();
 }
 
-//Filtre d'inversion
+
+/**
+ * @brief MainWindow::inversion
+ * filtre d'inversion
+ */
 void MainWindow::inversion()
 {
     if(image1.isNull())
@@ -194,7 +246,11 @@ void MainWindow::inversion()
     ui->label_image->setPixmap(QPixmap::fromImage(imgCpy));
 }
 
-//Filtre de flou
+
+/**
+ * @brief MainWindow::flou
+ * filtre flou
+ */
 void MainWindow::flou()
 {
     if(image1.isNull())
@@ -234,7 +290,12 @@ void MainWindow::flou()
     ui->label_image->setPixmap(QPixmap::fromImage(imgCpy));
 }
 
-//Filtre de contraste (correspond à l'accentuation des contours)
+
+
+/**
+ * @brief MainWindow::contraste
+ * Filtre de contraste (correspond à l'accentuation des contours)
+ */
 void MainWindow::contraste()
 {
     QImage imgCpy = image1;
@@ -290,18 +351,32 @@ void MainWindow::contraste()
         ui->label_image->setPixmap(QPixmap::fromImage(imgCpy));
 }
 
+/**
+ * @brief MainWindow::about
+ * A propos de l'application
+ */
 void MainWindow::about()
 {
     QMessageBox::about(this, "A propos de l'application",
                        tr("<p>Cette <b> application </b> a pour objectif de s'initier au traitrment d'image en C++ avec Qt"  ));
 
 }
+
+/**
+ * @brief MainWindow::fermer
+ * Fermeture de l'application
+ */
 void MainWindow::fermer()
 {
     qApp->exit();
 }
 
 
+
+/**
+ * @brief MainWindow::afficher_histogramme_rgb
+ * @param src
+ */
 void MainWindow::afficher_histogramme_rgb(Mat src)
 {
     vector<Mat>tab = histogramme(src);
@@ -346,6 +421,12 @@ void MainWindow::afficher_histogramme_rgb(Mat src)
 
 
 
+/**
+ * @brief MainWindow::QImage2Mat
+ * @param img: l'image à vonvertir
+ * @return cv converti
+ * Convertit QImage en cv
+ */
 cv::Mat MainWindow::QImage2Mat(QImage& img)
 {
     cv::Mat tmp(img.height(),img.width(),CV_8UC3,(uchar*)img.bits(),img.bytesPerLine());
@@ -355,6 +436,11 @@ cv::Mat MainWindow::QImage2Mat(QImage& img)
 
 }
 
+
+/**
+ * @brief MainWindow::afficher_histogramme
+ * Afficha des histogrammes
+ */
 void MainWindow::afficher_histogramme()
 {
     if(image1.isNull())
@@ -370,6 +456,10 @@ void MainWindow::afficher_histogramme()
      afficher_histogramme_rgb(QImage2Mat(image1));//afficher les histogrammes en couleur
 }
 
+/**
+ * @brief MainWindow::mouseMoveEvent
+ * @param event
+ */
 void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
     rubberBand->setGeometry(QRect(myPoint, event->pos()).normalized());
@@ -378,6 +468,10 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 }
 
 
+/**
+ * @brief MainWindow::mousePressEvent
+ * @param event
+ */
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
 
@@ -393,33 +487,38 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
 }
 
+/**
+ * @brief MainWindow::mouseReleaseEvent
+ * @param event
+ */
+
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
    QPoint p1 = mapToGlobal(myPoint);
    QPoint p2 = event->globalPos();
    //p1 = ui->label_image->mapFromGlobal(p1);
    //p2 = ui->label_image->mapFromGlobal(p2);
-   double X = image1.width();
-   double Y = image1.height();
+   double X = ui->label_image->width();
+   double Y = ui->label_image->height();
    QPixmap originalQpix(*ui->label_image->pixmap());
-   X = originalQpix.width() / X;
-   Y = originalQpix.height() / Y;
+   //X = originalQpix.width() / X;
+   //Y = originalQpix.height() / Y;
    /*p1.setX(int(p1.x() * X));
    p1.setY(int(p1.y()* Y));
 
    p2.setX(int(p2.x() * X));
    p2.setY(int(p2.y() * Y));*/
-   if(X-1 < p1.x()){
+   if(X < p1.x()){
        p1.setX(int(X));
    }
-   if(Y-1 < p1.y()){
+   if(Y < p1.y()){
        p2.setX(int(Y));
    }
-   if(X-1 < p2.x()){
+   if(X < p2.x()){
        p2.setX(int(X));
    }
 
-    if(Y-1 < p2.y()){
+    if(Y < p2.y()){
        p2.setY(int(Y));
     }
    QRect rect(p1, p2);
@@ -432,8 +531,17 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 
 
   }
+   else{
+
+
+   }
 
 }
+
+/**
+ * @brief MainWindow::cropper
+ * Crop d'une image
+ */
 
 void MainWindow::cropper()
 {
@@ -456,6 +564,12 @@ void MainWindow::cropper()
 
 }
 
+
+/**
+ * @brief MainWindow::cropImage
+ * @param rect: rectangle de l'image à cropper
+ * @return l'image cropper
+ */
 QImage MainWindow::cropImage(QRect rect)
 {
     if(ui->label_image->pixmap() != NULL){
@@ -465,17 +579,16 @@ QImage MainWindow::cropImage(QRect rect)
     ui->label_image->setPixmap(QPixmap::fromImage(imageCopy));
     return imageCopy;
     }
-    else{
-
-         QMessageBox::warning(this, "Image", "Aucune image à cropper\n");
-
-    }
-
+    return image1;
 }
 
 
 
-
+/**
+ * @brief MainWindow::IPlImage2QImage
+ * @param newImage
+ * @return
+ */
 QPixmap MainWindow::IPlImage2QImage(const IplImage *newImage)
 {
     QPixmap monPixmap;
@@ -501,6 +614,12 @@ QPixmap MainWindow::IPlImage2QImage(const IplImage *newImage)
     return monPixmap;
 }
 
+
+/**
+ * @brief MainWindow::histogramme
+ * @param img
+ * @return
+ */
 vector<Mat> MainWindow::histogramme(Mat &img)
 {
     int bins = 256;  //nombre de bacs
@@ -592,6 +711,12 @@ vector<Mat> MainWindow::histogramme(Mat &img)
     return canavas;
 }
 
+
+/**
+ * @brief MainWindow::Mat2QPixmap
+ * @param mat
+ * @return
+ */
 QPixmap MainWindow::Mat2QPixmap(const Mat &mat)
 {
     Mat rgb;
@@ -602,6 +727,11 @@ QPixmap MainWindow::Mat2QPixmap(const Mat &mat)
 }
 
 
+
+/**
+ * @brief MainWindow::creer_fenetre_redimension
+ * Crée le formulaire de redimensionnement
+ */
 void MainWindow::creer_fenetre_redimension()
 {
    if(image1.isNull())
@@ -620,12 +750,24 @@ void MainWindow::creer_fenetre_redimension()
 }
 
 
+/**
+ * @brief MainWindow::redimensionner
+ * @param largeur
+ * @param hauteur
+ * Cette fonction effectue le redimensionnement
+ */
 void MainWindow::redimensionner(int largeur, int hauteur)
 {
     QImage image =  image1.scaled(largeur, hauteur, Qt::IgnoreAspectRatio, Qt::FastTransformation);
      ui->label_image->setPixmap(QPixmap::fromImage(image));
 }
 
+
+/**
+ * @brief MainWindow::histogramme_yuv
+ * @param image
+ * @return
+ */
 QImage MainWindow::histogramme_yuv(QImage image)
 {
     QImage image_yuv;
@@ -649,6 +791,11 @@ QImage MainWindow::histogramme_yuv(QImage image)
       return image_yuv;
 }
 
+
+/**
+ * @brief MainWindow::afficher_histogramme_yuv
+ * @param src
+ */
 void MainWindow::afficher_histogramme_yuv(Mat src)
 {
     vector<Mat>tab = histogramme(src);
@@ -692,3 +839,34 @@ void MainWindow::afficher_histogramme_yuv(Mat src)
     }
 
 }
+
+
+/**
+ * @brief MainWindow::rotation_droite
+ * Cette fonction effectue la rotation de l'image
+ */
+
+void MainWindow::rotateImage()
+{
+    if(image1.isNull())
+     {
+         QMessageBox::information(this, "MainWindow", "Veillez chargez une image,"
+                                  "pour charger une image, aller dans le menu fichier->ouvrir,"
+                                     "sélectionner une image ou faites Ctrl+O");
+
+
+     }
+
+    else{
+        QImage image = ui->label_image->pixmap()->toImage();
+        ui->label_image->setPixmap(QPixmap::fromImage(image).transformed(QMatrix().rotate(90)));
+
+    }
+
+
+}
+
+
+
+
+

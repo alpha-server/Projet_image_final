@@ -15,7 +15,6 @@ using namespace cv;
 using namespace std;
 
 
-#include"traiterImage.h"
 
 
 namespace Ui
@@ -33,6 +32,7 @@ public:
 
 
 protected slots:
+
     //Les slots
     void ouvrir();  //ouvrir l'image
     void enregistrer();  //enregistrer l'image
@@ -47,8 +47,15 @@ protected slots:
     void initialiser();//revenir à l'image de départ
     void redimensionner(int largeur, int hauteur);
     void afficher_histogramme();
+    void rotateImage();//faire la rotation à droite de l'image
+
+
+    void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*);
 
 private:
+
     QImage  histogramme_yuv(QImage image);
     QPixmap Mat2QPixmap(const Mat&);  //convertir un Mat en QPixmap
     QImage  cropImage(QRect);//découpaer l'image
@@ -61,16 +68,17 @@ private:
     void creer_shortcut();        //creer les raccourcis
     QPixmap IPlImage2QImage(const IplImage*);  //Convertir une IplImage en QImage
     cv::Mat QImage2Mat(QImage&);  //convertir QImage en Mat
-    TraiterImage*traiterImage;  //traitement de l'image
-    TraiterImage*traiter_histo;//Traitement des histgrammes
+    IplImage* QImageToIplImage(const QImage);//convertir QImage en IplImage
+
+
+
     QString fileName; //fichier pour ouverture de l'image
     QImage image1;  //image a ouvrir
-    void mousePressEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent*);
-    void mouseMoveEvent(QMouseEvent*);
+
     QMouseEvent*event;
     QRubberBand*rubberBand;  //découper l'image
     QPoint myPoint;         //Point pour connaitre la position de la souris
+
 
 
     Ui::MainWindow *ui;//fenêtre principale

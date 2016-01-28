@@ -16,7 +16,7 @@ SOURCES += main.cpp\
         mainwindow.cpp \
    # traiterImage.cpp \
     formRedimensionnement.cpp \
-traiterImage.cpp\
+traiterImage.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -32,3 +32,5 @@ LIBS += -lopencv_core\
         -lopencv_features2d\
         -lopencv_calib3d
         -lopencv_objdetect\
+
+OTHER_FILES +=

@@ -194,7 +194,7 @@ void MainWindow::initialiser()
     ui->label_histo1->show();
     ui->label_histo2->show();
     ui->label_histo3->show();
-    afficher_histogramme_rgb(QImage2Mat(image1));
+   // afficher_histogramme_rgb(QImage2Mat(image1));
 
 }
 
@@ -958,7 +958,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event)
     QPixmap originalQpix(*ui->label_image->pixmap());
     X = originalQpix.width() / X;
     Y = originalQpix.height() / Y;
-    /*p1.setX(int(p1.x() * X));
+    p1.setX(int(p1.x() * X));
 
    p1.setY(int(p1.y()* Y));
 
@@ -1027,7 +1027,7 @@ void MainWindow::cropper()
         QRect myRect= rubberBand->rect();
         QImage myImage =  cropImage(myRect);
         Mat imageCrop = QImage2Mat(myImage);
-        afficher_histogramme_rgb(imageCrop);
+      //  afficher_histogramme_rgb(imageCrop);
     }
 
 }

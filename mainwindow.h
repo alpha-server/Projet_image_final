@@ -53,15 +53,17 @@ protected slots:
     void rotateImage();//faire la rotation à droite de l'image
 
 
-    void mousePressEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent*);
-    void mouseMoveEvent(QMouseEvent*);
 
     void contourPerso();
     void repoussage();
 
 
 private:
+
+
+    void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*);
 
     QImage  histogramme_yuv(QImage image);
     QPixmap Mat2QPixmap(const Mat&);  //convertir un Mat en QPixmap

@@ -11,10 +11,9 @@
 #include<opencv2/highgui/highgui.hpp>
 #include<QMouseEvent>
 #include<QRubberBand>
+
 using namespace cv;
 using namespace std;
-
-
 
 
 namespace Ui
@@ -43,10 +42,14 @@ protected slots:
     void flou();
     void contraste();
     void cropper();
+    void fusionmilieu();
+    void contoursobel();
+    void contourprewitt();
     void creer_fenetre_redimension();
     void initialiser();//revenir à l'image de départ
     void redimensionner(int largeur, int hauteur);
     void afficher_histogramme();
+
     void rotateImage();//faire la rotation à droite de l'image
 
 
@@ -54,13 +57,17 @@ protected slots:
     void mouseReleaseEvent(QMouseEvent*);
     void mouseMoveEvent(QMouseEvent*);
 
+    void contourPerso();
+    void repoussage();
+
+
 private:
 
     QImage  histogramme_yuv(QImage image);
     QPixmap Mat2QPixmap(const Mat&);  //convertir un Mat en QPixmap
     QImage  cropImage(QRect);//découpaer l'image
-     void afficher_histogramme_rgb(Mat); //afficher l'histogramme en couleur
-  //  void afficher_histogramme();      //Afficher les histogrammes de ccouleurs de l'image
+    void afficher_histogramme_rgb(Mat); //afficher l'histogramme en couleur
+    //  void afficher_histogramme();      //Afficher les histogrammes de ccouleurs de l'image
     void afficher_histogramme_yuv(Mat);
     vector<Mat> histogramme(Mat&);  //Créer l'histogramme de couleurs de l'image
     void creer_connexions();       //créer les connexions
@@ -72,13 +79,13 @@ private:
 
 
 
+
     QString fileName; //fichier pour ouverture de l'image
     QImage image1;  //image a ouvrir
 
     QMouseEvent*event;
     QRubberBand*rubberBand;  //découper l'image
     QPoint myPoint;         //Point pour connaitre la position de la souris
-
 
 
     Ui::MainWindow *ui;//fenêtre principale
